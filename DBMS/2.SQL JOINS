@@ -1,0 +1,95 @@
+-- Refer sql JOINS image for table view
+create table employee(
+id int primary key,
+fname varchar(255),
+lname varchar(255),
+age int,
+emailID varchar(255),
+PhoneNo int,
+city varchar(255)
+);
+
+create table Client(
+id int primary key,
+first_name varchar(255),
+last_name varchar(255),
+age int,
+emailID varchar(255),
+PhoneNo int,
+city varchar(255),
+empID int,
+foreign key(empID) references employee(id)
+);
+
+create table Project(
+id int primary key,
+empID int,
+name varchar(255),
+startdate date,
+clientID int,
+foreign key(empID) references employee(id),
+foreign key(clientID) references Client(id)
+);
+
+INSERT INTO Employee
+VALUES 
+(1, 'Aman', 'Proto',32, ' aman@gmail.com', '898', 'Delhi'),
+(2,'Yagya','Narayan',44, 'yagya@gmail.com' , '222', 'Palam'),
+(3,'Rahul','BD ',22, ' rahul@gmail.com' , '444', ' Kolkata'),
+(4,'Jatin' , 'Hermit' ,31, ' jatin@gmail.com' , ' 666' , ' Raipur'),
+(5,'PK','Pandey' ,21, 'pk@gmail.com', '555', 'Jaipur');
+
+
+INSERT INTO Client
+VALUES 
+(1, 'Mac', 'Rogers',47, 'mac@hotmail.com', '333', 'kolkata', 3),
+(2, 'Max', 'Poirier',27, 'max@gmail.com', '222', 'kolkata', 3),
+(3, 'Peter', 'Jain',24, 'peter@abc.com', '111', 'Delhi', 1),
+(4, 'Sushant', 'aggarwal',23, 'sushant@yahoo.com.com', '45454', 'Hyderabad', 5),
+(5, 'Pratap', 'singh',36, 'p@xyz.com', '77767', 'Mumbai', 2);
+
+INSERT INTO Project
+VALUES 
+(1, 1, 'A', '2021-04-21', 3),
+(2, 2, 'B', '2021-03-12', 1),
+(3, 3, 'C', '2021-01-16', 5),
+(4, 3, 'D', '2021-04-27', 2),
+(5, 5, 'E', '2021-05-01', 4);
+
+-- INNER JOIN
+-- Enlist all the employees ID's, names along with the Project allocated to them.
+select e.id, e.fname, e.lname, p.name as project_name from employee as e
+INNER JOIN
+project as p
+on e.id = p.empID;
+
+-- or for without using join keyword
+select * from employee as e, project as p where e.id = p.empID;
+
+-- Fetch out all the employee ID's and their contact detail who have been working
+-- from Jaipur with the clients name working in Hyderabad.
+select e.fname, e.id, e.emailID, e.PhoneNo, c.id from employee as e
+Inner JOIN
+client as c
+on c.empID = e.id
+where c.city = 'hyderabad' and e.city = 'jaipur';
+
+-- LEFT JOIN
+-- Fetch out each project allocated to each employee.
+select e.id, e.fname, e.lname, p.name from employee as e
+left Join
+project as p
+on p.empId = e.id;
+
+-- RIGHT JOIN
+-- List out all the projects along with the employee's name and their respective allocated email ID.
+select p.id as project_ID,  p.name as project_name, e.fname, e.lname, e.emailID from employee as e
+right join
+project as p
+on p.empId = e.id;
+
+-- CROSS JOIN
+-- List out all the combinations possible for the employee's name and projects that can exist.
+select e.id, e.fname, e.lname, p.name from employee as e 
+CROSS JOIN
+project as p;

@@ -1,0 +1,77 @@
+-- Refer SQL set 1 table for table view
+-- SET operations
+
+create Table Dept1 (
+empid int primary key,
+name varchar(255),
+role varchar(255)
+);
+
+create Table Dept2(
+empid int primary key,
+name varchar(255),
+role varchar(255)
+);
+
+insert into Dept1 values
+(1,'A', 'engineer'),
+(2,'B', 'salesman'),
+(3,'C', 'manager'),
+(4,'D', 'salesman'),
+(5,'E', 'engineer');
+
+insert into Dept2 values
+(3,'C', 'manager'),
+(6,'F', 'marketing'),
+(7,'G', 'salesman');
+
+-- LIST OUT ALL THE EMPLOYESS IN TE COMPANY
+-- union set opeartion
+select * from DEPT1 AS D1 
+UNION
+Select * from DEPT2 AS D2;
+
+-- LIST OUT ALL THE EMPLOYESS IN THE COMPANY WHO WORKS AS A SALESMAN
+select * from Dept1 where role = 'salesman'
+UNION
+select * from dept2 where role = 'salesman';
+
+-- LIST OUT ALL THE EMPLOYEE WHO WORK FOR BOTH THE DEPARTMENT
+-- intersect operation
+select distinct * from dept1 
+INNER JOIN
+dept2 
+using(empId);
+-- OR
+select d1.* from dept1 as d1
+INNER JOIN
+dept2 as d2
+where d1.empId = d2.empId;
+
+-- LIST OUT ALL THE EMPLOYEE WORKING IN DEPARTMENT 1 BUT NOT IN DEPARTMENT 2
+-- minus set operation
+select d1.* from dept1 as d1
+LEFT JOIN
+dept2 as d2
+using (empid)
+where d2.empid is null;
+-- OR
+select d1.* from dept1 as d1
+LEFT JOIN
+dept2 as d2
+on d1.empid = d2.empid
+where d2.empid is null;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
